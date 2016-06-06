@@ -1,5 +1,5 @@
 {
-  "name": "polymer-experiment",
+  "name": "vga-app",
   "main": "index.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
