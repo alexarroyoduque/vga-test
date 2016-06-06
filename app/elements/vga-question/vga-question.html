@@ -3,29 +3,65 @@
 <dom-module id="vga-question">
   <template>
     <style>
-      :host {
-        --team-red-background-color: #fc1c57;
-        --team-green-background-color: #229900;
-        --team-blue-background-color: #1165B9;
-      }
-
       paper-card {
         width: 100%;
       }
 
+      .options {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        justify-content: center;
+        flex-flow: row;
+      }
+
+      label {
+        width: 100%;
+      }
+
+      /*.option {
+        background-color: #e3aff3;
+        margin: 5px;
+        width: calc(50% - 10px);
+        height: 40px;
+      }*/
+
+      input[type="radio"] {
+        display: none;
+      }
+
+
     </style>
 
 
-    <paper-card heading="Seleccione un equipo">
+    <paper-card heading="Elija una opción">
       <div class="card-content">
         <p>
           contenido
         </p>
       </div>
       <div class="card-actions">
-        <!-- <template is="dom-if" if="{{isAnyTeamSelected}}">
-          <paper-button on-tap="confirm">Confirmar</paper-button>
-        </template> -->
+        <div class="card-content">
+          <div class="options">
+            <label on-tap="anyOptionSelected">
+              <input type="radio" name="team" value="a">
+              <div class="option">a</div>
+            </label>
+            <label on-tap="anyOptionSelected">
+              <input type="radio" name="team" value="b">
+              <div class="option">b</div>
+            </label>
+            <label on-tap="anyOptionSelected">
+              <input type="radio" name="team" value="c">
+              <div class="option">c</div>
+            </label>
+            <label on-tap="anyOptionSelected">
+              <input type="radio" name="team" value="d">
+              <div class="option">d</div>
+            </label>
+          </div>
+        </div>
+
       </div>
     </paper-card>
 
