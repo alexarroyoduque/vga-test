@@ -172,6 +172,8 @@
 
         if (seletedTeam) {
           console.log(seletedTeam.value);
+          this.set('route.path', 'question');
+          console.log(this.route);
         }
       }
     });

@@ -7,7 +7,12 @@
 <link rel="import" href="../../../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 
+<link rel="import" href="../../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+
 <link rel="import" href="../vga-team/vga-team.html">
+<link rel="import" href="../vga-question/vga-question.html">
 
 <dom-module id="vga-app">
   <template>
@@ -48,47 +53,20 @@
       </app-header>
 
       <div content>
-        <vga-team></vga-team>
-        <!-- <paper-card heading="Seleccione un equipo">
-          <div class="card-content">
-            <label on-tap="anyTeamSelected">
-              <input type="radio" name="team" value="red">
-              <div class="team team-red">
-                <div id="triangle-down"></div>
-              </div>
-            </label>
-            <label on-tap="anyTeamSelected">
-              <input type="radio" name="team" value="green">
-              <div class="team team-green">
-                <div id="pacman-1">
-                  <div id="pacman-2"></div>
-                </div>
-              </div>
-            </label>
-            <label on-tap="anyTeamSelected">
-              <input type="radio" name="team" value="blue">
-              <div class="team team-blue">
-                <div id="triangle-up"></div>
-              </div>
-            </label>
-          </div>
-          <div class="card-actions">
-            <template is="dom-if" if="{{isAnyTeamSelected}}">
-              <paper-button on-tap="confirm">Confirmar</paper-button>
-            </template>
-          </div>
-        </paper-card> -->
+        <app-location route="{{route}}"></app-location>
+        <app-route
+          route="{{route}}"
+          pattern="/:view"
+          data="{{routeData}}">
+        </app-route>
 
-        <!-- <paper-card heading="Introduzca nombre de usuario">
-          <div class="card-content">
-            <paper-input label="Nombre"></paper-input>
-          </div>
-          <div class="card-actions">
-            <paper-button on-click="confirm">Confirmar</paper-button>
-          </div>
-        </paper-card> -->
+        <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
+          <vga-team name="team" route="{{route}}"></vga-team>
+          <vga-question name="question" route="{{route}}"></vga-question>
+        </iron-pages>
 
-
+        <!-- <vga-team></vga-team> -->
+        <!-- <vga-question></vga-question> -->
 
         <!-- <template is="dom-repeat" items="{{items}}">
           <div># <span>{{index}}</span></div>
@@ -110,6 +88,9 @@
     Polymer({
       is: 'vga-app',
       properties: {
+        route: {
+          type: Object
+        },
         firebaseUrl: {
           type: String,
           value: 'https://polymer-experiment.firebaseio.com/'
@@ -125,6 +106,14 @@
         isAnyTeamSelected: {
           type: Boolean,
           value: false
+        }
+      },
+      observers: [
+        '_onRoutePathChanged(route.path)'
+      ],
+      _onRoutePathChanged: function(path) {
+        if (!path || path === '/') {
+          this.set('route.path', 'team');
         }
       },
       onFirebaseError: function(event) {
@@ -155,16 +144,6 @@
         this.ref.push({
           text: option
         });
-      },
-      anyTeamSelected: function () {
-        this.isAnyTeamSelected = true;
-      },
-      confirm: function () {
-        var seletedTeam = document.querySelector('input[type="radio"]:checked');
-
-        if (seletedTeam) {
-          console.log(seletedTeam.value);
-        }
       }
 
 

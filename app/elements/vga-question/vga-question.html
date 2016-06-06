@@ -1,0 +1,41 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="vga-question">
+  <template>
+    <style>
+      :host {
+        --team-red-background-color: #fc1c57;
+        --team-green-background-color: #229900;
+        --team-blue-background-color: #1165B9;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+
+    </style>
+
+
+    <paper-card heading="Seleccione un equipo">
+      <div class="card-content">
+        <p>
+          contenido
+        </p>
+      </div>
+      <div class="card-actions">
+        <!-- <template is="dom-if" if="{{isAnyTeamSelected}}">
+          <paper-button on-tap="confirm">Confirmar</paper-button>
+        </template> -->
+      </div>
+    </paper-card>
+
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'vga-question',
+      properties: {}
+    });
+  </script>
+</dom-module>
