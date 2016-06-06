@@ -1,0 +1,179 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="vga-team">
+  <template>
+    <style>
+      :host {
+        --team-red-background-color: #FF0554;
+        --team-green-background-color: #229900;
+        --team-blue-background-color: #1165B9;
+      }
+
+      paper-card {
+        width: 100%;
+      }
+
+      .card-content {
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        flex-flow: column;
+
+        text-align: center;
+      }
+
+      .card-actions {
+        text-align: center;
+      }
+
+      label {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+      }
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      input[type="radio"]:checked + .team {
+          animation: selected-team-animation 0.6s infinite ease;
+          animation-direction: alternate;
+          outline: 2px inset black;
+      }
+
+      @keyframes selected-team-animation {
+        100% {background-color: rgb(238, 212, 36)}
+      }
+
+      #triangle-down {
+        align-self: center;
+      	width: 0;
+      	height: 0;
+      	border-left: 30px solid transparent;
+      	border-right: 30px solid transparent;
+      	border-top: 50px solid white;
+      }
+
+      #pacman-1 {
+        align-self: center;
+        width: 0px;
+        height: 0px;
+        border-right: 30px solid transparent;
+        border-top: 30px solid white;
+        border-left: 30px solid white;
+        border-bottom: 30px solid white;
+        border-top-left-radius: 60px;
+        border-top-right-radius: 60px;
+        border-bottom-left-radius: 60px;
+        border-bottom-right-radius: 60px;
+        transform: rotate(-45deg);
+        position: relative;
+      }
+
+      #pacman-2 {
+        align-self: center;
+        width: 0px;
+        height: 0px;
+        border-right: 30px solid transparent;
+        border-top: 30px solid white;
+        border-left: 30px solid white;
+        border-bottom: 30px solid white;
+        border-top-left-radius: 60px;
+        border-top-right-radius: 60px;
+        border-bottom-left-radius: 60px;
+        border-bottom-right-radius: 60px;
+        position: absolute;
+        left: -30px;
+        top: -30px;
+        transform: rotate(30deg);
+      }
+
+      #triangle-up {
+        align-self: center;
+      	width: 0;
+      	height: 0;
+      	border-left: 30px solid transparent;
+      	border-right: 30px solid transparent;
+      	border-bottom: 50px solid white;
+      }
+
+      .team {
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        flex-flow: row;
+
+        width: 90%;
+        margin-bottom: 15px;
+        height: 70px;
+      }
+      .team-red {
+        background-color: var(--team-red-background-color);
+      }
+      .team-green {
+        background-color: var(--team-green-background-color);
+      }
+      .team-blue {
+        background-color: var(--team-blue-background-color);
+      }
+
+    </style>
+
+
+    <paper-card heading="Seleccione un equipo">
+      <div class="card-content">
+        <label on-tap="anyTeamSelected">
+          <input type="radio" name="team" value="red">
+          <div class="team team-red">
+            <div id="triangle-down"></div>
+          </div>
+        </label>
+        <label on-tap="anyTeamSelected">
+          <input type="radio" name="team" value="green">
+          <div class="team team-green">
+            <div id="pacman-1">
+              <div id="pacman-2"></div>
+            </div>
+          </div>
+        </label>
+        <label on-tap="anyTeamSelected">
+          <input type="radio" name="team" value="blue">
+          <div class="team team-blue">
+            <div id="triangle-up"></div>
+          </div>
+        </label>
+      </div>
+      <div class="card-actions">
+        <template is="dom-if" if="{{isAnyTeamSelected}}">
+          <paper-button on-tap="confirm">Confirmar</paper-button>
+        </template>
+      </div>
+    </paper-card>
+
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'vga-team',
+      properties: {
+        isAnyTeamSelected: {
+          type: Boolean,
+          value: false
+        }
+      },
+      anyTeamSelected: function () {
+        this.isAnyTeamSelected = true;
+      },
+      confirm: function () {
+        var seletedTeam = document.querySelector('input[type="radio"]:checked');
+
+        if (seletedTeam) {
+          console.log(seletedTeam.value);
+        }
+      }
+    });
+  </script>
+</dom-module>

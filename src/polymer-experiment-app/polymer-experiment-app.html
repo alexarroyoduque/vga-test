@@ -1,0 +1,173 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-auth.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+
+<link rel="import" href="../vga-team/vga-team.html">
+
+<dom-module id="polymer-experiment-app">
+  <template>
+    <style>
+    :host {
+
+    }
+    app-header {
+      position: fixed;
+
+      --app-header-background-front-layer: {
+        background-color: red;
+      };
+      --app-header-background-rear-layer: {
+        background-color: yellow;
+      };
+    }
+
+    </style>
+
+    <firebase-auth
+      auto-login
+      location="[[firebaseUrl]]"
+      provider="[[firebaseProvider]]"
+      on-error="onFirebaseError"
+      on-login="onFirebaseLogin">
+    </firebase-auth>
+
+    <app-header-layout>
+      <app-header fixed condenses reveals effects="waterfall resize-title">
+        <app-toolbar>
+          <h4 condensed-title>VGA</h4>
+        </app-toolbar>
+        <app-toolbar class="tall">
+          <h1 title>VGA</h1>
+
+        </app-toolbar>
+      </app-header>
+
+      <div content>
+        <vga-team></vga-team>
+        <!-- <paper-card heading="Seleccione un equipo">
+          <div class="card-content">
+            <label on-tap="anyTeamSelected">
+              <input type="radio" name="team" value="red">
+              <div class="team team-red">
+                <div id="triangle-down"></div>
+              </div>
+            </label>
+            <label on-tap="anyTeamSelected">
+              <input type="radio" name="team" value="green">
+              <div class="team team-green">
+                <div id="pacman-1">
+                  <div id="pacman-2"></div>
+                </div>
+              </div>
+            </label>
+            <label on-tap="anyTeamSelected">
+              <input type="radio" name="team" value="blue">
+              <div class="team team-blue">
+                <div id="triangle-up"></div>
+              </div>
+            </label>
+          </div>
+          <div class="card-actions">
+            <template is="dom-if" if="{{isAnyTeamSelected}}">
+              <paper-button on-tap="confirm">Confirmar</paper-button>
+            </template>
+          </div>
+        </paper-card> -->
+
+        <!-- <paper-card heading="Introduzca nombre de usuario">
+          <div class="card-content">
+            <paper-input label="Nombre"></paper-input>
+          </div>
+          <div class="card-actions">
+            <paper-button on-click="confirm">Confirmar</paper-button>
+          </div>
+        </paper-card> -->
+
+
+
+        <!-- <template is="dom-repeat" items="{{items}}">
+          <div># <span>{{index}}</span></div>
+          <div><span>{{item.text}}</span></div>
+        </template>
+        <paper-button raised on-click="voteForA">A</paper-button>
+        <paper-button raised on-click="voteForB">B</paper-button>
+        <paper-button raised on-click="voteForC">C</paper-button>
+        <paper-button raised on-click="voteForD">D</paper-button> -->
+      </div>
+
+    </app-header-layout>
+
+
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'polymer-experiment-app',
+      properties: {
+        firebaseUrl: {
+          type: String,
+          value: 'https://polymer-experiment.firebaseio.com/'
+        },
+        firebaseProvider: {
+          type: String,
+          value: 'anonymous'
+        },
+        items: {
+          type: Array,
+          value: []
+        },
+        isAnyTeamSelected: {
+          type: Boolean,
+          value: false
+        }
+      },
+      onFirebaseError: function(event) {
+        console.log('error')
+        console.log(event.detail.message)
+      },
+      onFirebaseLogin: function(event) {
+        console.log('login')
+        this.ref = new Firebase(this.firebaseUrl + '/user/' +
+                                                event.detail.user.uid);
+        this.ref.on('value', (snapshot)=> {
+          this.updateItems(snapshot);
+        });
+      },
+      updateItems: function(snapshot) {
+        this.items = [];
+        snapshot.forEach(function(childSnapshot) {
+          var item = childSnapshot.val();
+          item.uid = childSnapshot.key();
+          this.push('items', item);
+        }.bind(this));
+      },
+      voteForA: function(event) {
+        this.voteFor('A');
+        console.log(event)
+      },
+      voteFor: function (option) {
+        this.ref.push({
+          text: option
+        });
+      },
+      anyTeamSelected: function () {
+        this.isAnyTeamSelected = true;
+      },
+      confirm: function () {
+        var seletedTeam = document.querySelector('input[type="radio"]:checked');
+
+        if (seletedTeam) {
+          console.log(seletedTeam.value);
+        }
+      }
+
+
+    });
+  </script>
+</dom-module>
